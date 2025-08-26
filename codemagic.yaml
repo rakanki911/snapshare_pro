@@ -1,0 +1,69 @@
+workflows:
+  ios-release-build:
+    name: iOS Release Build (unsigned)
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+        - ios/Pods
+
+    scripts:
+      - name: Flutter doctor + pub get + precache iOS
+        script: |
+          set -euo pipefail
+          flutter doctor -v
+          flutter clean
+          flutter pub get
+          flutter precache --ios
+
+      - name: Ensure iOS 13 + Swift 5
+        script: |
+          set -euo pipefail
+          /usr/bin/sed -i '' "s/^platform :ios.*/platform :ios, '13.0'/" ios/Podfile || true
+          if ! grep -q "post_install do |installer|" ios/Podfile; then
+            cat <<'RUBY' >> ios/Podfile
+post_install do |installer|
+  installer.pods_project.targets.each do |t|
+    t.build_configurations.each do |bc|
+      bc.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      bc.build_settings['SWIFT_VERSION'] = '5.0'
+    end
+  end
+end
+RUBY
+          fi
+
+      - name: CocoaPods
+        script: |
+          set -euo pipefail
+          rm -rf ios/Pods ios/Podfile.lock
+          cd ios
+          pod repo update
+          pod install
+          cd ..
+
+      - name: Flutter build iOS (no codesign)
+        script: |
+          set -euo pipefail
+          flutter build ios --release --no-codesign -v
+
+      - name: Package unsigned IPA
+        script: |
+          set -euo pipefail
+          APP_PATH="build/ios/iphoneos/Runner.app"
+          OUT_DIR="build/ios/ipa"
+          rm -rf "$OUT_DIR"
+          mkdir -p "$OUT_DIR/Payload"
+          cp -R "$APP_PATH" "$OUT_DIR/Payload/Runner.app"
+          (cd "$OUT_DIR" && zip -r -y Runner-unsigned.ipa Payload)
+
+    artifacts:
+      - build/ios/iphoneos/Runner.app
+      - build/ios/ipa/Runner-unsigned.ipa

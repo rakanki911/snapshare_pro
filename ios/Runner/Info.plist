@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+	<!-- بيانات أساسية للتطبيق -->
+	<key>CFBundleIdentifier</key>
+	<string>com.rakan.snapsharepro</string>
+	<key>CFBundleName</key>
+	<string>SnapShare Pro</string>
+	<key>CFBundleDisplayName</key>
+	<string>SnapShare Pro</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string></string>
+
+	<!-- الاتجاهات المدعومة -->
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+
+	<!-- الوضع الداكن والفاتح -->
+	<key>UIUserInterfaceStyle</key>
+	<string>Automatic</string>
+
+	<!-- Flutter -->
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+
+	<!-- أذونات -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>يحتاج التطبيق الوصول إلى مكتبة الصور لاختيار صورة أو فيديو للمشاركة على Snapchat.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>يحتاج التطبيق حفظ الوسائط إلى مكتبة الصور عند الحاجة.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>يحتاج التطبيق الوصول إلى الكاميرا لالتقاط صور وفيديو.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>يحتاج التطبيق الوصول إلى الميكروفون لتسجيل الصوت في مقاطع الفيديو.</string>
+
+	<!-- Snap Kit -->
+	<key>SCSDKClientId</key>
+	<string>6aa0d3f2-f1a5-40b3-95aa-399b56dc5fe1</string>
+	<key>SCSDKRedirectUrl</key>
+	<string>snapkit-6aa0d3f2-f1a5-40b3-95aa-399b56dc5fe1://oauth2</string>
+
+	<!-- السماح بفتح Snapchat -->
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>snapchat</string>
+	</array>
+
+	<!-- URL Scheme -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>snapkit-6aa0d3f2-f1a5-40b3-95aa-399b56dc5fe1</string>
+			</array>
+		</dict>
+	</array>
+
+	<!-- Flutter الافتراضي -->
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+
+</dict>
+</plist>
