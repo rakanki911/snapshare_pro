@@ -26,7 +26,7 @@ workflows:
       - name: Ensure iOS 13 + Swift 5 (patch Podfile safely)
         script: |
           set -euo pipefail
-          # ارفع الحد الأدنى لـ iOS
+          # عدّل منصة iOS في Podfile
           /usr/bin/sed -i '' "s/^platform :ios.*/platform :ios, '13.0'/" ios/Podfile || true
 
           # أضف بلوك post_install إذا ما كان موجود
