@@ -23,24 +23,24 @@ workflows:
           flutter pub get
           flutter precache --ios
 
-      - name: Ensure iOS 13 + Swift 5 (patch Podfile safely)
+      - name: Ensure iOS 13 + Swift 5 (patch Podfile safely, no heredoc)
         script: |
           set -euo pipefail
-          # عدّل منصة iOS في Podfile
+          # ارفع الحد الأدنى لـ iOS
           /usr/bin/sed -i '' "s/^platform :ios.*/platform :ios, '13.0'/" ios/Podfile || true
 
-          # أضف بلوك post_install إذا ما كان موجود
+          # لو post_install غير موجود، أضِفه بسطر-بسطر عبر printf (بدون heredoc)
           if ! grep -q "post_install do |installer|" ios/Podfile; then
-            cat >> ios/Podfile <<'EOF'
-post_install do |installer|
-  installer.pods_project.targets.each do |t|
-    t.build_configurations.each do |bc|
-      bc.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
-      bc.build_settings['SWIFT_VERSION'] = '5.0'
-    end
-  end
-end
-EOF
+            {
+              printf "%s\n" "post_install do |installer|"
+              printf "%s\n" "  installer.pods_project.targets.each do |t|"
+              printf "%s\n" "    t.build_configurations.each do |bc|"
+              printf "%s\n" "      bc.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'"
+              printf "%s\n" "      bc.build_settings['SWIFT_VERSION'] = '5.0'"
+              printf "%s\n" "    end"
+              printf "%s\n" "  end"
+              printf "%s\n" "end"
+            } >> ios/Podfile
           fi
 
       - name: CocoaPods (clean install)
