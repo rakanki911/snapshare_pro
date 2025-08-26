@@ -28,9 +28,10 @@ workflows:
           set -euo pipefail
           # ارفع الحد الأدنى لـ iOS
           /usr/bin/sed -i '' "s/^platform :ios.*/platform :ios, '13.0'/" ios/Podfile || true
+
           # أضف بلوك post_install إذا ما كان موجود
           if ! grep -q "post_install do |installer|" ios/Podfile; then
-            cat >> ios/Podfile <<'RUBY'
+            cat >> ios/Podfile <<'EOF'
 post_install do |installer|
   installer.pods_project.targets.each do |t|
     t.build_configurations.each do |bc|
@@ -39,7 +40,7 @@ post_install do |installer|
     end
   end
 end
-RUBY
+EOF
           fi
 
       - name: CocoaPods (clean install)
